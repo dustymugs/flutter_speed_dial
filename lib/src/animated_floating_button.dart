@@ -2,25 +2,27 @@ import 'package:flutter/material.dart';
 
 class AnimatedFloatingButton extends StatelessWidget {
   final bool visible;
-  final VoidCallback callback;
+  final VoidCallback onPressed;
   final VoidCallback onLongPress;
   final Widget child;
   final Color backgroundColor;
   final Color foregroundColor;
   final String tooltip;
   final String heroTag;
+	final Size size;
   final double elevation;
   final ShapeBorder shape;
   final Curve curve;
 
   AnimatedFloatingButton({
     this.visible = true,
-    this.callback,
+    this.onPressed,
     this.child,
     this.backgroundColor,
     this.foregroundColor,
     this.tooltip,
     this.heroTag,
+		this.size = const Size.square(75.0),
     this.elevation = 6.0,
     this.shape = const CircleBorder(),
     this.curve = Curves.linear,
@@ -31,32 +33,27 @@ class AnimatedFloatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     var margin = visible ? 0.0 : 28.0;
 
-    return Container(
-      constraints: BoxConstraints(
-        minHeight: 0.0,
-        minWidth: 0.0,
-      ),
-      width: 56.0,
-      height: 56.0,
+    return SizedBox.fromSize(
+			size: size,
       child: AnimatedContainer(
           curve: curve,
           margin: EdgeInsets.all(margin),
           duration: Duration(milliseconds: 150),
-          width: visible ? 56.0 : 0.0,
-          height: visible ? 56.0 : 0.0,
+          width: visible ? size.width : 0.0,
+          height: visible ? size.height : 0.0,
           child: GestureDetector(
             onLongPress: onLongPress,
-            child: FloatingActionButton(
-              child: visible ? child : null,
-              backgroundColor: backgroundColor,
-              foregroundColor: foregroundColor,
-              onPressed: callback,
-              tooltip: tooltip,
-              heroTag: heroTag,
-              elevation: elevation,
-              highlightElevation: elevation,
-              shape: shape,
-            ),
+						child: FloatingActionButton(
+							child: visible ? child : null,
+							backgroundColor: backgroundColor,
+							foregroundColor: foregroundColor,
+							onPressed: onPressed,
+							tooltip: tooltip,
+							heroTag: heroTag,
+							elevation: elevation,
+							highlightElevation: elevation,
+							shape: shape,
+						),
           ),
       ),
     );

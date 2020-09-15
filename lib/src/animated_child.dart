@@ -6,6 +6,8 @@ class AnimatedChild extends AnimatedWidget {
   final Color foregroundColor;
   final double elevation;
   final Widget child;
+	final Size size;
+	final EdgeInsets marginAlignment;
 
   final String label;
   final TextStyle labelStyle;
@@ -26,6 +28,8 @@ class AnimatedChild extends AnimatedWidget {
     this.foregroundColor,
     this.elevation = 6.0,
     this.child,
+		this.size = const Size.square(50.0),
+		this.marginAlignment,
     this.label,
     this.labelStyle,
     this.labelBackgroundColor,
@@ -35,12 +39,12 @@ class AnimatedChild extends AnimatedWidget {
     this.toggleChildren,
     this.shape,
     this.heroTag,
-  }) : super(key: key, listenable: animation);
+  }): super(key: key, listenable: animation);
 
   Widget buildLabel() {
     final Animation<double> animation = listenable;
 
-    if (!((label != null || labelWidget != null) && visible && animation.value == 62.0)) {
+    if (!((label != null || labelWidget != null) && visible && animation.value == size.height)) {
       return Container();
     }
 
@@ -49,7 +53,10 @@ class AnimatedChild extends AnimatedWidget {
     return GestureDetector(
       onTap: _performAction,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
+        padding: EdgeInsets.symmetric(
+					vertical: 5.0,
+				 	horizontal: 8.0
+				),
         margin: EdgeInsets.only(right: 18.0),
         decoration: BoxDecoration(
           color: labelBackgroundColor ?? Colors.white,
@@ -75,38 +82,38 @@ class AnimatedChild extends AnimatedWidget {
   Widget build(BuildContext context) {
     final Animation<double> animation = listenable;
 
-    final Widget buttonChild = animation.value > 50.0
-        ? Container(
-            width: animation.value,
-            height: animation.value,
-            child: child ?? Container(),
-          )
-        : Container(
-            width: 0.0,
-            height: 0.0,
-          );
+    final Widget buttonChild = (
+			animation.value / size.height > 0.8 ?
+				Container(
+					width: animation.value,
+					height: animation.value,
+					child: child ?? Container(),
+				) :
+				Container()
+		);
 
     return Container(
+      margin: marginAlignment,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           buildLabel(),
           Container(
-            width: 62.0,
+            width: size.width,
             height: animation.value,
-            padding: EdgeInsets.only(bottom: 62.0 - animation.value),
+            padding: EdgeInsets.only(bottom: size.height - animation.value),
             child: Container(
-              height: 62.0,
+              height: size.height,
               width: animation.value,
-              padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-              child: FloatingActionButton(
-                heroTag: heroTag,
-                onPressed: _performAction,
-                backgroundColor: backgroundColor,
-                foregroundColor: foregroundColor,
-                elevation: elevation ?? 6.0,
-                child: buttonChild,
-              ),
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+							child: FloatingActionButton(
+								heroTag: heroTag,
+								onPressed: _performAction,
+								backgroundColor: backgroundColor,
+								foregroundColor: foregroundColor,
+								elevation: elevation ?? 6.0,
+								child: buttonChild,
+							),
             ),
           )
         ],

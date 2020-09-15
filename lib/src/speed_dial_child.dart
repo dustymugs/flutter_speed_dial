@@ -18,6 +18,7 @@ class SpeedDialChild {
   final Widget child;
   final Color backgroundColor;
   final Color foregroundColor;
+  final Size size;
   final double elevation;
   final VoidCallback onTap;
   final ShapeBorder shape;
@@ -30,6 +31,7 @@ class SpeedDialChild {
     this.child,
     this.backgroundColor,
     this.foregroundColor,
+		this.size,
     this.elevation,
     this.onTap,
     this.shape,
