@@ -200,7 +200,7 @@ class _SpeedDialState extends State<SpeedDial> with SingleTickerProviderStateMix
 		}
 		else if (widget.endChild != null) {
 			child = AnimatedSwitcher(
-				duration: animationController.duration,
+				duration: animationController.duration * widget.children.length,
 				child: speedDialOpen ? widget.endChild : widget.child,
 			);
 		}
